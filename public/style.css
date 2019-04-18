@@ -1,71 +1,36 @@
-/* styles */
-/* called by your view template */
-
 * {
-  box-sizing: border-box;
+  margin: 0px;
+  padding: 0px;
 }
 
 body {
-  font-family: "Benton Sans", "Helvetica Neue", helvetica, arial, sans-serif;
-  margin: 2em;
+  padding: 10px;
 }
 
-h1 {
-  font-style: italic;
-  color: #373fff;
+.replies {
+  margin-left: 50px;
 }
 
-.bold {
-  font-weight: bold;
-}
-
-p {
-  max-width: 600px;
-}
-
-form {
-  margin-bottom: 25px;
-  padding: 15px;
-  background-color: cyan;
-  display: inline-block;
-  width: 100%;
-  max-width: 340px;
-  border-radius: 3px;
-}
-
-input {
-  display: block;
-  margin-bottom: 10px;
+.reply {
+  border: 1px dotted black;
+  margin: 5px;
   padding: 5px;
-  width: 100%;
-  border: 1px solid lightgrey;
-  border-radius: 3px;
-  font-size: 16px;
 }
 
-button {
-  font-size: 16px;
-  border-radius: 3px;
-  background-color: lightgrey;
-  border: 1px solid grey;
-  box-shadow: 2px 2px teal;
-  cursor: pointer;
+.newReply {
+  margin: 10px 5px 10px 5px;
 }
 
-button:hover {
-  background-color: yellow;
-}
-
-button:active {
-  box-shadow: none;
-}
-
-li {
+.thread {
+  border: 2px solid black;
+  padding: 5px;
   margin-bottom: 5px;
 }
 
-footer {
-  margin-top: 50px;
-  padding-top: 25px;
-  border-top: 1px solid lightgrey;
+.id {
+  font-size: 10.5px;
+}
+
+#submitNewThread {
+  margin: 50px;
 }
