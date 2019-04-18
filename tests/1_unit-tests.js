@@ -6,9 +6,9 @@
 *       (if additional are added, keep them at the very end!)
 */
 
-var chai = require('chai');
-var assert = chai.assert;
+const chai = require('chai');
+const assert = chai.assert;
 
-suite('Unit Tests', function(){
+suite.skip('Unit Tests', () => {
 
 });

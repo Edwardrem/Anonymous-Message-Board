@@ -6,51 +6,51 @@
 *       (if additional are added, keep them at the very end!)
 */
 
-var chaiHttp = require('chai-http');
-var chai = require('chai');
-var assert = chai.assert;
-var server = require('../server');
+const chaiHttp = require('chai-http');
+const chai = require('chai');
+const assert = chai.assert;
+const server = require('../server');
 
 chai.use(chaiHttp);
 
-suite('Functional Tests', function() {
+suite('Functional Tests', () => {
 
-  suite('API ROUTING FOR /api/threads/:board', function() {
+  suite('API ROUTING FOR /api/threads/:board', () => {
     
-    suite('POST', function() {
+    suite('POST', () => {
       
     });
     
-    suite('GET', function() {
+    suite('GET', () => {
       
     });
     
-    suite('DELETE', function() {
+    suite('DELETE', () => {
       
     });
     
-    suite('PUT', function() {
+    suite('PUT', () => {
       
     });
     
 
   });
   
-  suite('API ROUTING FOR /api/replies/:board', function() {
+  suite('API ROUTING FOR /api/replies/:board', () => {
     
-    suite('POST', function() {
+    suite('POST', () => {
       
     });
     
-    suite('GET', function() {
+    suite('GET', () => {
       
     });
     
-    suite('PUT', function() {
+    suite('PUT', () => {
       
     });
     
-    suite('DELETE', function() {
+    suite('DELETE', () => {
       
     });
     
