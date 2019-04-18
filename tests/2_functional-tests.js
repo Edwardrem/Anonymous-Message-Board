@@ -8,15 +8,13 @@
 
 const chaiHttp = require('chai-http');
 const chai = require('chai');
-const assert = chai.assert;
+const { assert } = chai;
 const server = require('../server');
 
 chai.use(chaiHttp);
 
 suite('Functional Tests', () => {
-
   suite('API ROUTING FOR /api/threads/:board', () => {
-    
     suite('POST', () => {
       
     });
@@ -32,12 +30,9 @@ suite('Functional Tests', () => {
     suite('PUT', () => {
       
     });
-    
-
   });
   
-  suite('API ROUTING FOR /api/replies/:board', () => {
-    
+  suite('API ROUTING FOR /api/replies/:board', () => { 
     suite('POST', () => {
       
     });
@@ -53,7 +48,5 @@ suite('Functional Tests', () => {
     suite('DELETE', () => {
       
     });
-    
   });
-
 });

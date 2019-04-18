@@ -5,7 +5,7 @@ dependencies:
   cors: 2.8.5
   express: 4.16.4
   helmet: 3.16.0
-  mocha: 6.1.3
+  mocha: 6.1.4
   mongodb: 3.2.3
   mongoose: 5.5.2
   zombie: 6.1.4
@@ -1074,14 +1074,14 @@ packages:
     dev: false
     resolution:
       integrity: sha1-R+Y/evVa+m+S4VAOaQ64uFKcCZo=
-  /js-yaml/3.13.0:
+  /js-yaml/3.13.1:
     dependencies:
       argparse: 1.0.10
       esprima: 4.0.1
     dev: false
     hasBin: true
     resolution:
-      integrity: sha512-pZZoSxcCYco+DIKBTimr67J6Hy+EYGZDY/HCWC+iAEA9h1ByhMXAIVUXMcMFpOCxQ/xjXmPI2MkDL5HRm5eFrQ==
+      integrity: sha512-YfbcO7jXDdyj0DGxYVSlSeQNHbD7XPWvrVWeVUujrQEoZzWJIRrCPoyk6kL6IAjAG2IolMK4T0hNUe0HOUs5Jw==
   /jsbn/0.1.1:
     dev: false
     resolution:
@@ -1285,7 +1285,7 @@ packages:
     hasBin: true
     resolution:
       integrity: sha1-MAV0OOrGz3+MR2fzhkjWaX11yQM=
-  /mocha/6.1.3:
+  /mocha/6.1.4:
     dependencies:
       ansi-colors: 3.2.3
       browser-stdout: 1.3.1
@@ -1296,7 +1296,7 @@ packages:
       glob: 7.1.3
       growl: 1.10.5
       he: 1.2.0
-      js-yaml: 3.13.0
+      js-yaml: 3.13.1
       log-symbols: 2.2.0
       minimatch: 3.0.4
       mkdirp: 0.5.1
@@ -1315,7 +1315,7 @@ packages:
       node: '>= 6.0.0'
     hasBin: true
     resolution:
-      integrity: sha512-QdE/w//EPHrqgT5PNRUjRVHy6IJAzAf1R8n2O8W8K2RZ+NbPfOD5cBDp+PGa2Gptep37C/TdBiaNwakppEzEbg==
+      integrity: sha512-PN8CIy4RXsIoxoFJzS4QNnCH4psUCPWc4/rPrst/ecSJJbLBkubMiyGCP2Kj/9YnWbotFqAoeXyXMucj7gwCFg==
   /mongodb-core/3.2.2:
     dependencies:
       bson: 1.1.1
@@ -2332,7 +2332,7 @@ specifiers:
   cors: ^2.8.5
   express: ^4.16.4
   helmet: ^3.16.0
-  mocha: ^6.1.3
+  mocha: ^6.1.4
   mongodb: ^3.2.3
   mongoose: ^5.5.2
   zombie: ^6.1.4
