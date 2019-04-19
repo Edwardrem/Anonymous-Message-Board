@@ -14,7 +14,7 @@ const db = mongoose.connection;
 module.exports = app => {
   app.get('/api/threads/:board', (req, res, next) => {
     const { board } = req.params;
-    Thread.find();
+    Thread.find({ board }, );
     /*
     
     I can GET an array of the most recent 10 bumped threads on 
