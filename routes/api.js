@@ -104,6 +104,7 @@ I can POST a reply to a thread on a specific board by passing form data text, de
 POST '/api/replies/:board'
 // adding a reply to a thread
 // .send({ text, delete_password, thread_id })
+// bumped_on to be updated: new Date();
 // route should res.redirect to thread page `/b/${board}/${thread_id})`
 
 
