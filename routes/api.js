@@ -14,7 +14,10 @@ const db = mongoose.connection;
 module.exports = app => {
   app.get('/api/threads/:board', (req, res, next) => {
     const { board } = req.params;
-    Thread.find({ board }, '-delete_password -reported', { $sort: -1 , (err, doc) =>);
+    Thread.find({ board }, '-delete_password -reported', { $sort: { bumped_on: 1 } }, (err, doc) => {
+      if(err) next(err);
+      return res.status(200).json(doc);
+    });
     /*
     
     I can GET an array of the most recent 10 bumped threads on 
