@@ -36,9 +36,6 @@ fccTestingRoutes(app);
 //Routing for API 
 apiRoutes(app);
 
-//Sample Front-end
-
-
 //404 Not Found Middleware
 app.use((req, res, next) => {
   res.status(404).type('text').send('Not Found');

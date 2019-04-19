@@ -94,48 +94,58 @@ module.exports = app => {
   app.post('/api/replies/:board', (req, res, next) => {
     /*
     
-    // I can POST a reply to a thread on a specific board by passing 
-    // form data text, delete_password, & thread_id to /api/replies/{board} 
-    // and it will also update the bumped_on date to the 
-    // comments date.(Recomend res.redirect to thread page 
-    // /b/{board}/{thread_id}) In the thread's 'replies' array will be 
-    // saved _id, text, created_on, delete_password, & reported.
-    //
-    // POST '/api/replies/:board'
-    // adding a reply to a thread
-    // .send({ text, delete_password, thread_id })
-    // thread's bumped_on will be updated to the date this reply was made
-    // route should res.redirect to thread page `/b/${board}/${thread_id})`
-    // replies Array consists of:
-    //  {
-    //    _id: new ObjectId();,
-    //    text: { type: String },
-    //    created_on: { type: Date },
-    //    delete_password: { type: String },
-    //    reported: { type: Boolean, default: false }
-    //  }
+    I can POST a reply to a thread on a specific board by passing 
+    form data text, delete_password, & thread_id to /api/replies/{board} 
+    and it will also update the bumped_on date to the 
+    comments date.(Recomend res.redirect to thread page 
+    /b/{board}/{thread_id}) In the thread's 'replies' array will be 
+    saved _id, text, created_on, delete_password, & reported.
+    
+    POST '/api/replies/:board'
+    adding a reply to a thread
+    .send({ text, delete_password, thread_id })
+    thread's bumped_on will be updated to the date this reply was made
+    route should res.redirect to thread page `/b/${board}/${thread_id})`
+    replies Array consists of:
+     {
+       _id: new ObjectId();,
+       text: { type: String },
+       created_on: { type: Date },
+       delete_password: { type: String },
+       reported: { type: Boolean, default: false }
+     }
+    
+    */
   });
   
   app.put('/api/replies/:board', (req, res, next) => {
-    // I can report a reply and change it's reported value to true by 
-    // sending a PUT request to /api/replies/{board} and pass along the 
-    // thread_id & reply_id. (Text response will be 'success')
-    //
-    // PUT '/api/replies/:board'
-    // .send({ thread_id, reply_id })
-    // reported will be updated to true
-    // res.status(200).send('success')
+    /*
+    
+    I can report a reply and change it's reported value to true by 
+    sending a PUT request to /api/replies/{board} and pass along the 
+    thread_id & reply_id. (Text response will be 'success')
+    
+    PUT '/api/replies/:board'
+    .send({ thread_id, reply_id })
+    reported will be updated to true
+    res.status(200).send('success')
+    
+    */
   });
   
   app.delete('/api/replies/:board', (req, res, next) => {
-    // I can delete a post(just changing the text to '[deleted]') if I 
-    // send a DELETE request to /api/replies/{board} and pass along the 
-    // thread_id, reply_id, & delete_password. (Text response will be 
-    // 'incorrect password' or 'success')
-    //
-    // DELETE '/api/replies/:board'
-    // .send({ thread_id, reply_id, delete_password })
-    // the reply's text field will be updated to equal: [deleted]
-    // res.status(400).send('incorrect password'); || res.status(200).send('success')
+    /*
+    
+    I can delete a post(just changing the text to '[deleted]') if I 
+    send a DELETE request to /api/replies/{board} and pass along the 
+    thread_id, reply_id, & delete_password. (Text response will be 
+    'incorrect password' or 'success')
+    
+    DELETE '/api/replies/:board'
+    .send({ thread_id, reply_id, delete_password })
+    the reply's text field will be updated to equal: [deleted]
+    res.status(400).send('incorrect password'); || res.status(200).send('success')
+    
+    */
   });
 };
