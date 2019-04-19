@@ -58,15 +58,16 @@ I can POST a thread to a specific message board by passing form data text and de
   POST '/api/threads/:board'
   // route should res.redirect to board page `/b/${board}`
   // .send( { text, delete_password })
-  // thread document will contain: {
-        _id: // could be the native document_id,
-        text: { type: String },
-        created_on(date&time): { type: Date },
-        bumped_on(date&time initializes to equal created_on: { type: Date },
-        reported: { type: Boolean },
-        delete_password: { type: String },
-        replies: { type: Array } 
-      }
+  // thread document will contain: 
+       {
+         _id: // could be the native document_id,
+         text: { type: String },
+         created_on(date&time): { type: Date },
+         bumped_on(date&time initializes to equal created_on: { type: Date },
+         reported: { type: Boolean },
+         delete_password: { type: String },
+         replies: { type: Array } 
+       }
     
    
    
@@ -91,16 +92,19 @@ I can delete a thread completely if I send a DELETE request to /api/threads/{boa
 I can GET an entire thread with all it's replies from /api/replies/{board}?thread_id={thread_id}. Also hiding the same fields.
 
   GET '/api/replies/:board'
+  // url looks like: /api/replies/{board}?thread_id={thread_id}
   // .query({ thread_id })
   // return ALL replies from corresponding thread
   // omit the fields: '-delete_password, -reported'
 
 
 
-I can POST a reply to a thead on a specific board by passing form data text, delete_password, & thread_id to /api/replies/{board} and it will also update the bumped_on date to the comments date.(Recomend res.redirect to thread page /b/{board}/{thread_id}) In the thread's 'replies' array will be saved _id, text, created_on, delete_password, & reported.
+I can POST a reply to a thread on a specific board by passing form data text, delete_password, & thread_id to /api/replies/{board} and it will also update the bumped_on date to the comments date.(Recomend res.redirect to thread page /b/{board}/{thread_id}) In the thread's 'replies' array will be saved _id, text, created_on, delete_password, & reported.
 
 POST '/api/replies/:board'
-// route should res.redirect to board page `/b/${board}`
+// adding a reply to a thread
+// .send({ text, delete_password, thread_id })
+// route should res.redirect to thread page `/b/${board}/${thread_id})`
 
 
 
