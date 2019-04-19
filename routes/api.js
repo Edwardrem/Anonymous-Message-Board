@@ -44,9 +44,12 @@ module.exports = app => {
 
 I can GET an array of the most recent 10 bumped threads on the board with only the most recent 3 replies from /api/threads/{board}. The reported and delete_passwords fields will not be sent.   
 
-[
-  // sort by bumped_on 
-]
+  GET '/api/threads/:board'
+  [
+    // display 10 threads sorted by bumped_on in Descending order (newest at top)
+    // each thread will only display 3 replies sorted in the same fashion
+    // omit the fields: '-delete_password, -reported'
+  ]
 
 
 I can POST a thread to a specific message board by passing form data text and delete_password to /api/threads/{board}.
@@ -54,8 +57,8 @@ I can POST a thread to a specific message board by passing form data text and de
 
   // route should res.redirect to board page `/b/${board}`
   POST '/api/threads/:board'
-  .send( { text, delete_password })
-  document will contain:
+  // .send( { text, delete_password })
+  thread document will contain:
    {
       _id: // could be the native document_id,
       text: { type: String },
