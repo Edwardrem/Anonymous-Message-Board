@@ -1,23 +1,40 @@
-/*
-*
-*
-*       Complete the API routing below
-*
-*
-*/
-
 'use strict';
 
 const { expect } = require('chai');
 
 module.exports = app => {
+  app.get('/api/threads/:board', (req, res, next) => {
   
-  app.route('/api/threads/:board');
+  });
+  
+  app.post('/api/threads/:board', (req, res, next) => {
+  
+  });
+  
+  app.put('/api/threads/:board', (req, res, next) => {
+  
+  });
+  
+  app.delete('/api/threads/:board', (req, res, next) => {
+  
+  });
     
-  app.route('/api/replies/:board');
-
+  app.get('/api/replies/:board', (req, res, next) => {
+  
+  });
+  
+  app.post('/api/replies/:board', (req, res, next) => {
+  
+  });
+  
+  app.put('/api/replies/:board', (req, res, next) => {
+  
+  });
+  
+  app.delete('/api/replies/:board', (req, res, next) => {
+  
+  });
 };
-
 
 /*
 
@@ -37,7 +54,5 @@ I can delete a post(just changing the text to '[deleted]') if I send a DELETE re
 I can report a thread and change it's reported value to true by sending a PUT request to /api/threads/{board} and pass along the thread_id. (Text response will be 'success')
 
 I can report a reply and change it's reported value to true by sending a PUT request to /api/replies/{board} and pass along the thread_id & reply_id. (Text response will be 'success')
-
-Complete functional tests that wholely test routes and pass.
 
 */
