@@ -1,7 +1,15 @@
 'use strict';
 
+const mongo = require('mongodb');
+const mongoose = require('mongoose');
+const mongooseConfig = require('../config/mongoose_config');
+const { CONNECTION_STRING } = process.env;
 const { expect } = require('chai');
 const { Thread } = require('../models/Thread');
+
+mongoose.connect(CONNECTION_STRING, mongooseConfig);
+
+const db = mongoose.connection;
 
 module.exports = app => {
   app.get('/api/threads/:board', (req, res, next) => {
@@ -32,6 +40,10 @@ module.exports = app => {
       reported: false,
       delete_password,
       replies: []
+    });
+    Thread.findOne({ board, text }, (err, existingThread) => {
+      if(err) next(err);
+      if (existingThread)
     });
     
     /*
