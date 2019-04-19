@@ -1,6 +1,7 @@
 'use strict';
 
 const { expect } = require('chai');
+const { Thread } = require('../models/Thread');
 
 module.exports = app => {
   app.get('/api/threads/:board', (req, res, next) => {
@@ -21,6 +22,8 @@ module.exports = app => {
   });
   
   app.post('/api/threads/:board', (req, res, next) => {
+    const { text, delete_password } = req.body;
+    const thread = new Thread();
     /*
     
     I can POST a thread to a specific message board by passing 

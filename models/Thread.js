@@ -8,34 +8,16 @@ const ReplySchema = new Schema({
   reported: { type: Boolean, default: false }
 }, { _id: true });
 
-const ThreadSchema = new Schema()
-
-/*
-
-Example Schema:
-
-const UserSchema = new Schema({
-  _id: { type: String, required: true },
-  username: { type: String, required: true },
-  count: { type: Number },
-  log: { type: Array, value: ExerciseSchema }
+const ThreadSchema = new Schema({
+  text: { type: String },
+  created_on: { type: Date },
+  bumped_on: { type: Date },
+  reported: { type: Boolean, default: false },
+  delete_password: { type: String },
+  replies: { type: Array, value: ReplySchema }
 }, { versionKey: false });
 
-const User = mongoose.model('User', UserSchema);
+const Thread = mongoose.model('Thread', ThreadSchema);
 
-module.exports.User = User;
-
-
-thread document will contain: 
-  {
-    _id: // native subdoc _id can be used,
-    text: { type: String },
-    created_on(date&time): { type: Date },
-    bumped_on(date&time initializes to equal created_on: { type: Date },
-    reported: { type: Boolean },
-    delete_password: { type: String },
-    replies: { type: Array } 
-  }
-
-*/
+module.exports.Thread = Thread;
 
