@@ -22,8 +22,18 @@ module.exports = app => {
   });
   
   app.post('/api/threads/:board', (req, res, next) => {
+    const { board } = req.params;
     const { text, delete_password } = req.body;
-    const thread = new Thread();
+    const thread = new Thread({
+      board,
+      text,
+      created_on: new Date(),
+      bumped_on: new Date(),
+      reported: false,
+      delete_password,
+      replies: []
+    });
+    
     /*
     
     I can POST a thread to a specific message board by passing 
