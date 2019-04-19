@@ -44,18 +44,19 @@ module.exports = app => {
 
 I can POST a thread to a specific message board by passing form data text and delete_password to /api/threads/{board}.
 (Recomend res.redirect to board page /b/{board}) Saved will be _id, text, created_on(date&time), bumped_on(date&time, starts same as created_on), reported(boolean), delete_password, & replies(array).
-route should res.redirect to board page `/b/${board}`
-'/api/threads/:board'
-.send( { text, delete_password })
-document will contain:
-{
-  _id: // could be the native document_id,
-  text: { type: String },
-  created_on(date&time): { type: Date },
-  bumped_on(date&time initializes to equal created_on: { type: Date },
-  reported: { type: Boolean },
-  delete_pass
-}
+  // route should res.redirect to board page `/b/${board}`
+  POST '/api/threads/:board'
+  .send( { text, delete_password })
+  document will contain:
+   {
+      _id: // could be the native document_id,
+      text: { type: String },
+      created_on(date&time): { type: Date },
+      bumped_on(date&time initializes to equal created_on: { type: Date },
+      reported: { type: Boolean },
+      delete_password: { type: String },
+      replies: { type: Array }
+    }
 
 
 I can POST a reply to a thead on a specific board by passing form data text, delete_password, & thread_id to /api/replies/{board} and it will also update the bumped_on date to the comments date.(Recomend res.redirect to thread page /b/{board}/{thread_id}) In the thread's 'replies' array will be saved _id, text, created_on, delete_password, & reported.
