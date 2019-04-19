@@ -13,6 +13,8 @@ const db = mongoose.connection;
 
 module.exports = app => {
   app.get('/api/threads/:board', (req, res, next) => {
+    const { board } = req.params;
+    Thread.find();
     /*
     
     I can GET an array of the most recent 10 bumped threads on 
@@ -43,32 +45,12 @@ module.exports = app => {
     });
     Thread.findOne({ board, text }, (err, existingThread) => {
       if(err) next(err);
-      if (existingThread)
+      if (existingThread) return res.redirect(`/api/threads/${board}`);
+      thread.save((err, newThread) => {
+        if(err) next(err);
+        return res.redirect(`/api/threads/${board}`);
+      });
     });
-    
-    /*
-    
-    I can POST a thread to a specific message board by passing 
-    form data text and delete_password to /api/threads/{board}.
-    (Recomend res.redirect to board page /b/{board}) Saved will 
-    be _id, text, created_on(date&time), bumped_on(date&time, 
-    starts same as created_on), reported(boolean), delete_password, & replies(array).
-    
-    POST '/api/threads/:board'
-    route should res.redirect to board page `/b/${board}`
-    .send( { text, delete_password })
-    thread document will contain: 
-     {
-       _id: // could be the native document_id,
-       text: { type: String },
-       created_on(date&time): { type: Date },
-       bumped_on(date&time initializes to equal created_on: { type: Date },
-       reported: { type: Boolean },
-       delete_password: { type: String },
-       replies: { type: Array } 
-     }
-     
-    */
   });
   
   app.put('/api/threads/:board', (req, res, next) => {
