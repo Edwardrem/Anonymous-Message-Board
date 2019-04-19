@@ -14,9 +14,10 @@ const db = mongoose.connection;
 module.exports = app => {
   app.get('/api/threads/:board', (req, res, next) => {
     const { board } = req.params;
-    Thread.find({ board }, '-delete_password -reported', { $sort: { bumped_on: 1 } }, (err, doc) => {
+    Thread.find({ board }, '-delete_password -reported', (err, docs) => {
       if(err) next(err);
-      return res.status(200).json(doc);
+      docs.sort((a, b) => b.bumped_on - a.bumped_on);
+      return res.status(200).json(docs);
     });
     /*
     
