@@ -14,7 +14,7 @@ const db = mongoose.connection;
 module.exports = app => {
   app.get('/api/threads/:board', (req, res, next) => {
     const { board } = req.params;
-    Thread.find({ board }, );
+    Thread.find({ board }, '-delete_password -reported', { $sort: -1 , (err, doc) =>);
     /*
     
     I can GET an array of the most recent 10 bumped threads on 
@@ -23,7 +23,7 @@ module.exports = app => {
     
     GET '/api/threads/:board'
     [
-      display 10 threads sorted by bumped_on in Descending order (newest at top)
+      display 10 threads sorted by bumped_on in Descending order (newest at top) -variable
       each thread will only display 3 replies sorted in the same fashion
       omit the fields: '-delete_password, -reported'
     ]
