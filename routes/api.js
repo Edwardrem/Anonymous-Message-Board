@@ -25,7 +25,7 @@ module.exports = app => {
         text: doc.text,
         created_on: doc.created_on,
         bumped_on: doc.bumped_on,
-        replies: ,
+        replies: doc.replies.map(reply => reply),
         replycount: doc.replies.length
       }));
       // console.log(docs);
