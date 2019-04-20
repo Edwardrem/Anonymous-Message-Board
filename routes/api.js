@@ -90,19 +90,21 @@ module.exports = app => {
   app.post('/api/replies/:board', (req, res, next) => {
     const { board } = req.params;
     const { text, delete_password, thread_id } = req.body;
-    Thread.findOne({ board, _id: thread_id }, (err, threadToUpdate) => {
+    Thread.findOne({ board, _id: thread_id }, (err, thread) => {
       if(err) next(err);
-      console.log(threadToUpdate.replies.filter(reply => reply.text === text).length > 1);
-      if (threadToUpdate.replies.includes(text)) return res.json(threadToUpdate);
-      threadToUpdate.replies.push({ 
+      if ((thread.replies.filter(reply => reply.text === text).length > 0)) return res.json(thread);
+      const rightNow = new Date();
+      thread.replies.push({ 
         _id: new ObjectId(),
         text,
-        created_on: new Date(),
+        created_on: rightNow,
         delete_password,
         reported: false
       })
-      threadToUpdate.save((err, updatedThread) => {
+      thread.bumped_on = rightNow;
+      thread.save((err, updatedThread) => {
         if(err) next(err);
+        updatedThread.sort((a, b) => b.replies.created_on - a.replies.created_on);
         return res.json(updatedThread);
       });
     });
