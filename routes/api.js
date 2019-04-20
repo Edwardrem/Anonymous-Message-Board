@@ -19,6 +19,13 @@ module.exports = app => {
       if(err) next(err);
       docs.sort((a, b) => b.bumped_on - a.bumped_on);
       docs.sort((a, b) => b.replies - a.replies);
+      let docArray = []; 
+      docs.forEach(doc => docArray.push({
+        _id:,
+        
+      }));
+      // console.log(docs);
+      // docs.replycount = docs.replies.length;
       return res.status(200).json(docs);
     });
     /*
