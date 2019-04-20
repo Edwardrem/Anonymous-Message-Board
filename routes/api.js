@@ -68,6 +68,13 @@ module.exports = app => {
   });
   
   app.delete('/api/threads/:board', (req, res, next) => {
+    const { board } = req.params;
+    const { thread_id, delete_password } = req.body;
+    Thread.deleteOne({ _id: thread_id, delete_password }, (err, updatedBoard) => {
+      if(err) next(err);
+      if (updatedBoard.$isDeleted) return res.status(200).send('success');
+      else return res.status(400).send('incorrect password');
+    });
     /*
     
     I can delete a thread completely if I send a DELETE request to 
