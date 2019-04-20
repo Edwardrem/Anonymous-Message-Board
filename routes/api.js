@@ -19,13 +19,13 @@ module.exports = app => {
       if(err) next(err);
       docs.sort((a, b) => b.bumped_on - a.bumped_on);
       docs.sort((a, b) => b.replies - a.replies);
-      let docArray = []; 
+      let docArray = [];
       docs.forEach(doc => docArray.push({
         _id: doc._id,
         text: doc.text,
         created_on: doc.created_on,
         bumped_on: doc.bumped_on,
-        replies: (doc.replies.forEach(reply => reply.filter(doc => doc.Object.keys === 'delete_password' || ''))),
+        replies: ,
         replycount: doc.replies.length
       }));
       // console.log(docs);
