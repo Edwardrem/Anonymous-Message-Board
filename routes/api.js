@@ -89,7 +89,10 @@ module.exports = app => {
   app.post('/api/replies/:board', (req, res, next) => {
     const { board } = req.params;
     const { text, delete_password, thread_id } = req.body;
-    Threads.findOneAndUpdate({ board, _id: thread_id });
+    Thread.findOne({ board, _id: thread_id }, (err, threadToUpdate) => {
+      if(err) next(err);
+      console.log(threadToUpdate);
+    });
     /*
     
     I can POST a reply to a thread on a specific board by passing 
