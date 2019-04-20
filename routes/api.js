@@ -100,7 +100,7 @@ module.exports = app => {
     Thread.findOne({ board, _id: thread_id }, '-delete_password -reported', (err, thread) => {
       if(err) next(err);
       if ((thread.replies.filter(reply => reply.text === text).length > 0)) {
-        return res.redirect(`/b/${board}/?thread_id=${thread_id}`);
+        return res.redirect(`/b/${board}/${thread_id}`);
       }
       thread.replies.push({ 
         _id: new ObjectId(),
@@ -113,7 +113,7 @@ module.exports = app => {
       thread.replies.sort((a, b) => b.created_on - a.created_on);
       thread.save((err, updatedThread) => {
         if(err) next(err);
-        return res.redirect(`/b/${board}/?thread_id=${thread_id}`);
+        return res.redirect(`/b/${board}/${thread_id}`);
       });
     });
   });
