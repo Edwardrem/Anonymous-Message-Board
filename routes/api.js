@@ -90,11 +90,10 @@ module.exports = app => {
   app.post('/api/replies/:board', (req, res, next) => {
     const { board } = req.params;
     const { text, delete_password, thread_id } = req.body;
-    Thread.findOne({ board, _id: thread_id }, (err, thread) => {
+    Thread.findOne({ board, _id: thread_id }, '-delete_password -reported', (err, thread) => {
       if(err) next(err);
       if ((thread.replies.filter(reply => reply.text === text).length > 0)) {
-        thread.replies.sort((a, b) => b.created_on - a.created_on);
-        return res.json(thread);
+        return res.redirect(`/api/threads/${board}`);
       }
       const rightNow = new Date();
       thread.replies.push({ 
