@@ -72,24 +72,15 @@ module.exports = app => {
     const { thread_id, delete_password } = req.body;
     Thread.deleteOne({ _id: thread_id, delete_password }, (err, updatedBoard) => {
       if(err) next(err);
-      if (updatedBoard.$isDeleted) return res.status(200).send('success');
-      else return res.status(400).send('incorrect password');
+      if (updatedBoard.deletedCount === 1) return res.status(200).send('success');
+      return res.send('incorrect password');
     });
-    /*
-    
-    I can delete a thread completely if I send a DELETE request to 
-    /api/threads/{board} and pass along the thread_id & delete_password. 
-    (Text response will be 'incorrect password' or 'success')
-    
-    DELETE '/api/threads/:board'
-    .send({ thread_id, delete_password })
-    remove this thread from ${baord}'s database of threads
-    res.status(400).send('incorrect password'); || res.status(200).send('success')
-    
-    */
   });
     
   app.get('/api/replies/:board', (req, res, next) => {
+    const { baord } = req.params;
+    const { thread_id } = req.query;
+    Thread.findOne({ _id: thread_id }, '-');
     /*
     
     I can GET an entire thread with all it's replies from 
