@@ -92,7 +92,10 @@ module.exports = app => {
     const { text, delete_password, thread_id } = req.body;
     Thread.findOne({ board, _id: thread_id }, (err, thread) => {
       if(err) next(err);
-      if ((thread.replies.filter(reply => reply.text === text).length > 0)) return res.json(thread);
+      if ((thread.replies.filter(reply => reply.text === text).length > 0)) {
+        thread.replies.sort((a, b) => b.created_on - a.created_on);
+        return res.json(thread);
+      }
       const rightNow = new Date();
       thread.replies.push({ 
         _id: new ObjectId(),
@@ -104,7 +107,7 @@ module.exports = app => {
       thread.bumped_on = rightNow;
       thread.save((err, updatedThread) => {
         if(err) next(err);
-        updatedThread.sort((a, b) => b.replies.created_on - a.replies.created_on);
+        updatedThread.replies.sort((a, b) => b.created_on - a.created_on);
         return res.json(updatedThread);
       });
     });
