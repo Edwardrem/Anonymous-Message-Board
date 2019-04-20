@@ -57,7 +57,7 @@ module.exports = app => {
     });
     Thread.findOne({ board, text }, (err, existingThread) => {
       if(err) next(err);
-      if (existingThread) return res.redirect(`/b/${board}/?thread`);
+      if (existingThread) return res.redirect(`/b/${board}/`);
       thread.save((err, newThread) => {
         if(err) next(err);
         return res.redirect(`/b/${board}/`);
@@ -100,7 +100,7 @@ module.exports = app => {
     Thread.findOne({ board, _id: thread_id }, '-delete_password -reported', (err, thread) => {
       if(err) next(err);
       if ((thread.replies.filter(reply => reply.text === text).length > 0)) {
-        return res.redirect(`/b/${board}/${thread_id}`);
+        return res.redirect(`/b/${board}/?thread_id=${thread_id}`);
       }
       thread.replies.push({ 
         _id: new ObjectId(),
@@ -113,33 +113,9 @@ module.exports = app => {
       thread.replies.sort((a, b) => b.created_on - a.created_on);
       thread.save((err, updatedThread) => {
         if(err) next(err);
-        return res.redirect(`/b/${board}/${thread_id}`);
+        return res.redirect(`/b/${board}/?thread_id=${thread_id}`);
       });
     });
-    /*
-    
-    I can POST a reply to a thread on a specific board by passing 
-    form data text, delete_password, & thread_id to /api/replies/{board} 
-    and it will also update the bumped_on date to the 
-    comments date.(Recomend res.redirect to thread page 
-    /b/{board}/{thread_id}) In the thread's 'replies' array will be 
-    saved _id, text, created_on, delete_password, & reported.
-    
-    POST '/api/replies/:board'
-    adding a reply to a thread
-    .send({ text, delete_password, thread_id })
-    thread's bumped_on will be updated to the date this reply was made
-    route should res.redirect to thread page `/b/${board}/${thread_id})`
-    replies Array consists of:
-     {
-       _id: new ObjectId();,
-       text: { type: String },
-       created_on: { type: Date },
-       delete_password: { type: String },
-       reported: { type: Boolean, default: false }
-     }
-    
-    */
   });
   
   app.put('/api/replies/:board', (req, res, next) => {
