@@ -14,9 +14,10 @@ const db = mongoose.connection;
 module.exports = app => {
   app.get('/api/threads/:board', (req, res, next) => {
     const { board } = req.params;
-    Thread.find({ board }, '-delete_password -reported', (err, docs) => {
+    Thread.find({ board }, '-delete_password -reported', { limit: 10 }, (err, docs) => {
       if(err) next(err);
       docs.sort((a, b) => b.bumped_on - a.bumped_on);
+      docs.sort((a, b) => b.replies - a.replies);
       return res.status(200).json(docs);
     });
     /*
@@ -58,6 +59,10 @@ module.exports = app => {
   });
   
   app.put('/api/threads/:board', (req, res, next) => {
+    const { board } = req.params;
+    const { thread_id } = req.body;
+    Thread.findByIdAndUpdate({ _id: thread_id }, { reported: true }, (err, thread))
+    
     /*
     
     I can report a thread and change it's reported value to true by 
