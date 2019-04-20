@@ -33,7 +33,7 @@ module.exports = app => {
         bumped_on: doc.bumped_on,
         replies: doc.replies.map(reply => {
           return Object.filter(reply, ([key, value]) => { 
-            return key !== 'reported' && key !== 'delete_password';
+            return key !== 'delete_password' && key !== 'reported';
           })
         }).slice(0, 3),
         replycount: doc.replies.length
@@ -41,20 +41,6 @@ module.exports = app => {
       docArray.sort((a, b) => b.bumped_on - a.bumped_on);
       return res.status(200).json(docArray);
     });
-    /*
-    
-    I can GET an array of the most recent 10 bumped threads on 
-    the board with only the most recent 3 replies from 
-    /api/threads/{board}. The reported and delete_passwords fields will not be sent.   
-    
-    GET '/api/threads/:board'
-    [
-      display 10 threads sorted by bumped_on in Descending order (newest at top) -variable
-      each thread will only display 3 replies sorted in the same fashion
-      omit the fields: '-delete_password, -reported'
-    ]
-    
-    */
   });
   
   app.post('/api/threads/:board', (req, res, next) => {
@@ -71,11 +57,10 @@ module.exports = app => {
     });
     Thread.findOne({ board, text }, (err, existingThread) => {
       if(err) next(err);
-      if (existingThread) return res.redirect(`/api/threads/${board}`);
-      
+      if (existingThread) return res.redirect(`/b/${board}/?thread`);
       thread.save((err, newThread) => {
         if(err) next(err);
-        return res.redirect(`/api/threads/${board}`);
+        return res.redirect(`/b/${board}/`);
       });
     });
   });
@@ -95,7 +80,7 @@ module.exports = app => {
     Thread.deleteOne({ board, _id: thread_id, delete_password }, (err, updatedBoard) => {
       if(err) next(err);
       if (updatedBoard.deletedCount === 1) return res.status(200).send('success');
-      return res.send('incorrect password');
+      return res.status(200).send('incorrect password');
     });
   });
     
