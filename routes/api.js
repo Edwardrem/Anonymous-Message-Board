@@ -15,15 +15,17 @@ const db = mongoose.connection;
 module.exports = app => {
   app.get('/api/threads/:board', (req, res, next) => {
     const { board } = req.params;
-    Thread.find({ board }, '-delete_password -reported', { limit: 10 }, (err, docs) => {
+    Thread.find({ board }, '-delete_password -reported', (err, docs) => {
       if(err) next(err);
-      docs.sort((a, b) => b.bumped_on - a.bumped_on);
-      docs.sort((a, b) => b.replies - a.replies);
       let docArray = [];
       Object.fromEntries = arr => { 
-        Object.assign({}, ...arr.map(([k, v]) => ({ [k]: v }))); 
+        return Object.assign({}, ...arr.map(([k, v]) => { 
+          return ({ [k]: v });
+        })); 
       }
-      Object.filter = (obj, predicate) => Object.fromEntries(Object.entries(obj).filter(predicate));
+      Object.filter = (obj, predicate) => { 
+        return Object.fromEntries(Object.entries(obj).filter(predicate));
+      }
       docs.forEach(doc => docArray.push({
         _id: doc._id,
         text: doc.text,
@@ -36,6 +38,8 @@ module.exports = app => {
         }).slice(0, 3),
         replycount: doc.replies.length
       }));
+      docArray.sort((a, b) => b.bumped_on - a.bumped_on);
+      docArray.sort((a, b) => b.replies - a.replies);
       return res.status(200).json(docArray);
     });
     /*
