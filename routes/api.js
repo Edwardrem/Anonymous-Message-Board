@@ -21,12 +21,16 @@ module.exports = app => {
       docs.sort((a, b) => b.replies - a.replies);
       let docArray = []; 
       docs.forEach(doc => docArray.push({
-        _id:,
-        
+        _id: doc._id,
+        text: doc.text,
+        created_on: doc.created_on,
+        bumped_on: doc.bumped_on,
+        replies: (doc.replies.forEach(reply => reply.filter(doc => doc.Object.keys === 'delete_password' || ''))),
+        replycount: doc.replies.length
       }));
       // console.log(docs);
       // docs.replycount = docs.replies.length;
-      return res.status(200).json(docs);
+      return res.status(200).json(docArray);
     });
     /*
     
