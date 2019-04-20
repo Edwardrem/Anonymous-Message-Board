@@ -90,7 +90,7 @@ module.exports = app => {
   app.post('/api/replies/:board', (req, res, next) => {
     const { board } = req.params;
     const { text, delete_password, thread_id } = req.body;
-    Thread.findOne({ board, _id: thread_id, replies: { $elemMatch: { $gte: 80, $lt: 85 } } }, (err, threadToUpdate) => {
+    Thread.findOne({ board, _id: thread_id }, (err, threadToUpdate) => {
       if(err) next(err);
       threadToUpdate.replies.push({ 
         _id: new ObjectId(),
