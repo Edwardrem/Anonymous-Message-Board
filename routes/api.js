@@ -6,6 +6,7 @@ const mongooseConfig = require('../config/mongoose_config');
 const { CONNECTION_STRING } = process.env;
 const { expect } = require('chai');
 const { Thread } = require('../models/Thread');
+const { ObjectId } = require('mongodb');
 
 mongoose.connect(CONNECTION_STRING, mongooseConfig);
 
@@ -89,9 +90,10 @@ module.exports = app => {
   app.post('/api/replies/:board', (req, res, next) => {
     const { board } = req.params;
     const { text, delete_password, thread_id } = req.body;
-    Thread.findOne({ board, _id: thread_id }, (err, threadToUpdate) => {
+    Thread.findOne({ board, _id: thread_id, replies: { $elemMatch: { $gte: 80, $lt: 85 } } }, (err, threadToUpdate) => {
       if(err) next(err);
       threadToUpdate.replies.push({ 
+        _id: new ObjectId(),
         text,
         created_on: new Date(),
         delete_password,
