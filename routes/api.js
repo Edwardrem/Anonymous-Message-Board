@@ -92,6 +92,8 @@ module.exports = app => {
     const { text, delete_password, thread_id } = req.body;
     Thread.findOne({ board, _id: thread_id }, (err, threadToUpdate) => {
       if(err) next(err);
+      console.log(threadToUpdate.replies.filter(reply => reply.text === text).length > 1);
+      if (threadToUpdate.replies.includes(text)) return res.json(threadToUpdate);
       threadToUpdate.replies.push({ 
         _id: new ObjectId(),
         text,
