@@ -20,6 +20,15 @@ module.exports = app => {
       docs.sort((a, b) => b.bumped_on - a.bumped_on);
       docs.sort((a, b) => b.replies - a.replies);
       let docArray = [];
+      /*
+      
+      Object.fromEntries = arr => Object.assign({}, ...arr.map( ([k, v]) => ({[k]: v}) ));
+      Object.filter = (obj, predicate) => Object.fromEntries(Object.entries(obj).filter(predicate));
+
+      let replyArray = Object.filter(scores, ([key, value]) => key !== 'reported' && key !== 'delete_password'); 
+      console.log(replyArray);
+      
+      */
       docs.forEach(doc => docArray.push({
         _id: doc._id,
         text: doc.text,
