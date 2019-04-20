@@ -91,7 +91,16 @@ module.exports = app => {
     const { text, delete_password, thread_id } = req.body;
     Thread.findOne({ board, _id: thread_id }, (err, threadToUpdate) => {
       if(err) next(err);
-      console.log(threadToUpdate);
+      threadToUpdate.replies.push({ 
+        text,
+        created_on: new Date(),
+        delete_password,
+        reported: false
+      })
+      threadToUpdate.save((err, updatedThread) => {
+        if(err) next(err);
+        return res.json(updatedThread);
+      });
     });
     /*
     
