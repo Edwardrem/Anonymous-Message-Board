@@ -61,20 +61,10 @@ module.exports = app => {
   app.put('/api/threads/:board', (req, res, next) => {
     const { board } = req.params;
     const { thread_id } = req.body;
-    Thread.findByIdAndUpdate({ _id: thread_id }, { reported: true }, (err, thread))
-    
-    /*
-    
-    I can report a thread and change it's reported value to true by 
-    sending a PUT request to /api/threads/{board} and pass along 
-    the thread_id. (Text response will be 'success') 
-    
-    PUT '/api/threads/:board'
-    .send({ thread_id })
-    thread's reported field will be updated to true
-    res.status(200).send('success');
-    
-    */
+    Thread.findByIdAndUpdate({ _id: thread_id }, { reported: true }, (err, thread) => {
+      if(err) next(err);
+      if (thread.reported === true) return res.status(200).send('success')
+    });
   });
   
   app.delete('/api/threads/:board', (req, res, next) => {
