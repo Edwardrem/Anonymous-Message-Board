@@ -61,7 +61,7 @@ module.exports = app => {
   app.put('/api/threads/:board', (req, res, next) => {
     const { board } = req.params;
     const { thread_id } = req.body;
-    Thread.findByIdAndUpdate({ _id: thread_id }, { reported: true }, (err, thread) => {
+    Thread.findByIdAndUpdate({ board, _id: thread_id }, { reported: true }, (err, thread) => {
       if(err) next(err);
       if (thread.reported === true) return res.status(200).send('success')
     });
@@ -70,7 +70,7 @@ module.exports = app => {
   app.delete('/api/threads/:board', (req, res, next) => {
     const { board } = req.params;
     const { thread_id, delete_password } = req.body;
-    Thread.deleteOne({ _id: thread_id, delete_password }, (err, updatedBoard) => {
+    Thread.deleteOne({ board, _id: thread_id, delete_password }, (err, updatedBoard) => {
       if(err) next(err);
       if (updatedBoard.deletedCount === 1) return res.status(200).send('success');
       return res.send('incorrect password');
@@ -78,24 +78,18 @@ module.exports = app => {
   });
     
   app.get('/api/replies/:board', (req, res, next) => {
-    const { baord } = req.params;
+    const { board } = req.params;
     const { thread_id } = req.query;
-    Thread.findOne({ _id: thread_id }, '-');
-    /*
-    
-    I can GET an entire thread with all it's replies from 
-    /api/replies/{board}?thread_id={thread_id}. Also hiding the same fields.
-    
-    GET '/api/replies/:board'
-    url looks like: /api/replies/{board}?thread_id={thread_id}
-    .query({ thread_id })
-    return ALL replies from corresponding thread
-    omit the fields: '-delete_password, -reported'
-    
-    */
+    Thread.findOne({ board, _id: thread_id }, '-delete_password -reported', (err, thread) =>{
+      if(err) next(err);
+      return res.status(200).json(thread);
+    });
   });
   
   app.post('/api/replies/:board', (req, res, next) => {
+    const { board } = req.params;
+    const { text, delete_password, thread_id } = req.body;
+    Threads.findOneAndUpdate({ board, _id: thread_id });
     /*
     
     I can POST a reply to a thread on a specific board by passing 
