@@ -15,7 +15,7 @@ const db = mongoose.connection;
 module.exports = app => {
   app.get('/api/threads/:board', (req, res, next) => {
     const { board } = req.params;
-    Thread.find({ board }, '-delete_password -reported', (err, docs) => {
+    Thread.find({ board }, '-delete_password -reported', { limit: 10 }, (err, docs) => {
       if(err) next(err);
       let docArray = [];
       Object.fromEntries = arr => { 
@@ -39,7 +39,6 @@ module.exports = app => {
         replycount: doc.replies.length
       }));
       docArray.sort((a, b) => b.bumped_on - a.bumped_on);
-      docArray.sort((a, b) => b.replies - a.replies);
       return res.status(200).json(docArray);
     });
     /*
@@ -73,6 +72,7 @@ module.exports = app => {
     Thread.findOne({ board, text }, (err, existingThread) => {
       if(err) next(err);
       if (existingThread) return res.redirect(`/api/threads/${board}`);
+      
       thread.save((err, newThread) => {
         if(err) next(err);
         return res.redirect(`/api/threads/${board}`);
