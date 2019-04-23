@@ -12,29 +12,30 @@ mongoose.connect(CONNECTION_STRING, mongooseConfig);
 
 const db = mongoose.connection;
 
+Object.fromEntries = arr => {
+  return Object.assign({}, ...arr.map(([k, v]) => { 
+    return ({ [k]: v });
+  })); 
+}
+Object.filter = (obj, predicate) => {
+  return Object.fromEntries(Object.entries(obj).filter(predicate));
+}
+
 module.exports = app => {
   app.get('/api/threads/:board', (req, res, next) => {
     const { board } = req.params;
     Thread.find({ board }, '-delete_password -reported', { limit: 10 }, (err, threads) => {
       if(err) next(err);
       const threadArray = [];
-      Object.fromEntries = arr => {
-        return Object.assign({}, ...arr.map(([k, v]) => { 
-          return ({ [k]: v });
-        })); 
-      }
-      Object.filter = (obj, predicate) => {
-        return Object.fromEntries(Object.entries(obj).filter(predicate));
-      }
       threads.forEach(doc => threadArray.push({
         _id: doc._id,
         text: doc.text,
         created_on: doc.created_on,
         bumped_on: doc.bumped_on,
         replies: doc.replies.map(reply => {
-          return Object.filter(reply, ([key, value]) => { 
+          return Object.filter(reply, ([key, value]) => {
             return key !== 'delete_password' && key !== 'reported';
-          })
+          });
         }).slice(0, 3),
         replycount: doc.replies.length
       }));
@@ -98,10 +99,18 @@ module.exports = app => {
     Thread.findOne({ board, _id: thread_id }, '-delete_password -reported', (err, thread) =>{
       if(err) next(err);
       const { _id, text, created_on, bumped_on, replies } = thread;
-      const repliesArray = [];
-      
+      const replyArray = 
       return res.status(200).json({
-        created_on
+        _id,
+        text,
+        created_on,
+        bumped_on,
+        replies: replies.map(reply => {
+          return Object.filter(reply, ([key, value]) => { 
+            return key !== 'delete_password' && key !== 'reported';
+          });
+        }),
+        replycount: replies.length
       });
     });
   });
