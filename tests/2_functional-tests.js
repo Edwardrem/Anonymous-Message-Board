@@ -160,13 +160,15 @@ suite('Functional Tests', () => {
         });
       });
       
-      test.skip('Succeed in deleting a reply with the correct delete_password', done => {
+      test('Succeed in deleting a reply with the correct delete_password', done => {
         chai.request(server).delete('/api/replies/general/').send({
           thread_id: threadId,
           reply_id: replyId,
           delete_password: deletePassword
         }).end((err, res) => {
           assert.equal(res.status, 200);
+          assert.equal(res.text, 'success');
+          done();
         });
       });
     });

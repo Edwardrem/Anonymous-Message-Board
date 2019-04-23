@@ -47,6 +47,8 @@ module.exports = app => {
   app.post('/api/threads/:board', (req, res, next) => {
     const { board } = req.params;
     const { text, delete_password } = req.body;
+    if (text.length <= 0) return res.send('empty text field');
+    if (delete_password.length <= 0) return res.send('empty password field');
     const thread = new Thread({
       board,
       text,
