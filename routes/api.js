@@ -47,8 +47,8 @@ module.exports = app => {
   app.post('/api/threads/:board', (req, res, next) => {
     const { board } = req.params;
     const { text, delete_password } = req.body;
-    if (text.length <= 0) return res.send('empty text field');
-    if (delete_password.length <= 0) return res.send('empty password field');
+    if (text.length === 0) return res.send('empty text field');
+    if (delete_password.length === 0) return res.send('empty password field');
     const thread = new Thread({
       board,
       text,
@@ -71,13 +71,14 @@ module.exports = app => {
   app.put('/api/threads/:board', (req, res, next) => {
     const { board } = req.params;
     const { thread_id } = req.body;
+    if (!ObjectId.isValid(thread_id)) return res.send('invalid thread_id');
     Thread.findOne({ board, _id: thread_id }, (err, thread) => {
       if(err) next(err);
       thread.reported = true;
       thread.markModified('reported');
       thread.save((err, updatedThread) => {
         if(err) next(err);
-        return res.status(200).send('success');
+        return res.status(200).send('reported');
       });
     });
   });
@@ -85,6 +86,8 @@ module.exports = app => {
   app.delete('/api/threads/:board', (req, res, next) => {
     const { board } = req.params;
     const { thread_id, delete_password } = req.body;
+    if (!ObjectId.isValid(thread_id)) return res.send('invalid thread_id');
+    if (delete_password.length === 0) return res.send('empty password field');
     Thread.findOne({ board, _id: thread_id }, (err, board) => {
       if(err) next(err);
       if (board.delete_password !== delete_password) return res.send('incorrect password');
@@ -98,6 +101,7 @@ module.exports = app => {
   app.get('/api/replies/:board', (req, res, next) => {
     const { board } = req.params;
     const { thread_id } = req.query;
+    if (!ObjectId.isValid(thread_id)) return res.send('invalid thread_id');
     Thread.findOne({ board, _id: thread_id }, '-delete_password -reported', (err, thread) =>{
       if(err) next(err);
       const { _id, text, created_on, bumped_on, replies } = thread;
@@ -114,6 +118,9 @@ module.exports = app => {
     const { board } = req.params;
     const { text, delete_password, thread_id } = req.body;
     const rightNow = new Date();
+    if (text.length === 0) return res.send('empty text field');
+    if (!ObjectId.isValid(thread_id)) return res.send('invalid thread_id');
+    if (delete_password.length === 0) return res.send('empty password field');
     Thread.findOne({ board, _id: thread_id }, '-delete_password -reported', (err, thread) => {
       if(err) next(err);
       if ((thread.replies.filter(reply => reply.text === text).length > 0)) {
@@ -138,6 +145,8 @@ module.exports = app => {
   app.put('/api/replies/:board', (req, res, next) => {
     const { board } = req.params;
     const { thread_id, reply_id } = req.body;
+    if (!ObjectId.isValid(thread_id)) return res.send('invalid thread_id');
+    if (!ObjectId.isValid(reply_id)) return res.send('invalid thread_id');
     Thread.findOne({ board, _id: thread_id }, (err, thread) => {
       if(err) next(err);
       const replyIndex = thread.replies.findIndex(reply => reply._id == reply_id);
@@ -146,7 +155,7 @@ module.exports = app => {
       thread.markModified('replies');
       thread.save((err, updatedThread) => {
         if(err) next(err);
-        return res.status(200).send('success');
+        return res.status(200).send('reported');
       });
     });
   });
@@ -154,6 +163,9 @@ module.exports = app => {
   app.delete('/api/replies/:board', (req, res, next) => {
     const { board } = req.params;
     const { thread_id, reply_id, delete_password } = req.body;
+    if (!ObjectId.isValid(thread_id)) return res.send('invalid thread_id');
+    if (!ObjectId.isValid(reply_id)) return res.send('invalid thread_id');
+    if (delete_password.length === 0) return res.send('empty password field');
     Thread.findOne({ board, _id: thread_id, }, (err, thread) => {
       if(err) next(err);
       const replyIndex = thread.replies.findIndex(reply => reply._id == reply_id);
