@@ -29,13 +29,22 @@ suite('Functional Tests', () => {
     });
     
     suite('GET', () => {
-      test.skip('GET 10 bumped threads with 3 replies', done => {
-        chai.request(server).get('/api/threads/general/')
+      test('GET 10 bumped threads with 3 replies', done => {
+        chai.request(server).get('/api/threads/general/').end((err, res) => {
+          assert.equal(res.status, 200);
+          assert.isArray(res.body);
+          assert.isArray(res.body[0].replies);
+          assert.isAtMost(res.body.length, 10);
+          assert.isAtMost(res.body[0].replies.length, 3);
+          done();
+        });
       });
     });
     
     suite.skip('DELETE', () => {
-      
+      test.skip(server).delete('/api.threads/general/').send({
+        
+      });
     });
     
     suite.skip('PUT', () => {
