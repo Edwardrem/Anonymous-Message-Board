@@ -46,7 +46,7 @@ suite('Functional Tests', () => {
     
     suite('PUT', () => {
       test('Report a board', done => {
-        chai.request(server).put('/api/threads/general').send({
+        chai.request(server).put('/api/threads/general/').send({
           thread_id: threadId
         }).end((err, res) => {
           assert.equal(res.status, 200);
@@ -69,7 +69,7 @@ suite('Functional Tests', () => {
       });
       
       test('Succeed in deleting a board with the correct delete_password', done => {
-        chai.request(server).delete('/api/threads/general').send({
+        chai.request(server).delete('/api/threads/general/').send({
           thread_id: threadId,
           delete_password: deletePassword
         }).end((err, res) => {
@@ -109,7 +109,7 @@ suite('Functional Tests', () => {
     
     suite('POST', () => {
       test('Redirect after creating a reply', done => {
-        chai.request(server).post('/api/replies/general').send({
+        chai.request(server).post('/api/replies/general/').send({
           text: 'Tech',
           thread_id: threadId,
           delete_password: deletePassword
@@ -123,8 +123,9 @@ suite('Functional Tests', () => {
     });
     
     suite('GET', () => {
-      test('Receive entire thread with all repleis', done => {
+      test('Receive entire thread with all replies', done => {
         chai.request(server).get(`/api/replies/general/?thread_id=${threadId}`).end((err, res) => {
+          replyId = res.body.replies[0]._id;
           assert.equal(res.status, 200);
           assert.equal(res.body._id, threadId);
           assert.isArray(res.body.replies);
@@ -133,14 +134,41 @@ suite('Functional Tests', () => {
       });
     });
     
-    suite.skip('PUT', () => {
+    suite('PUT', () => {
       test('Report a reply', done => {
-        chai.request(server).put('/api/replies/general'
+        chai.request(server).put('/api/replies/general/').send({
+          thread_id: threadId,
+          reply_id: replyId
+        }).end((err, res) => {
+          assert.equal(res.status, 200);
+          assert.equal(res.text, 'success');
+          done();
+        });
       });
     });
                
-    suite.skip('DELETE', () => {
+    suite('DELETE', () => {
+      test('Attempt to delete a reply with an incorrect delete_password', done => {
+        chai.request(server).delete('/api/replies/general/').send({
+          thread_id: threadId,
+          reply_id: replyId,
+          delete_password: 'wrongPassword'
+        }).end((err, res) => {
+          assert.equal(res.status, 200);
+          assert.equal(res.text, 'incorrect password');
+          done();
+        });
+      });
       
+      test.skip('Succeed in deleting a reply with the correct delete_password', done => {
+        chai.request(server).delete('/api/replies/general/').send({
+          thread_id: threadId,
+          reply_id: replyId,
+          delete_password: deletePassword
+        }).end((err, res) => {
+          assert.equal(res.status, 200);
+        });
+      });
     });
   });
 });
