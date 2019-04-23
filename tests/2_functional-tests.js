@@ -46,6 +46,7 @@ suite('Functional Tests', () => {
           assert.property(res.body[0], 'bumped_on');
           assert.property(res.body[0], 'replies');
           assert.property(res.body[0], 'replycount');
+          assert.notProperty(res.body);
           done();
         });
       });
@@ -136,8 +137,6 @@ suite('Functional Tests', () => {
           assert.equal(res.status, 200);
           assert.equal(res.body._id, threadId);
           assert.isArray(res.body.replies);
-          assert.isAtMost(res.body.length, 10);
-          assert.isAtMost(res.body.replies.length, 3);
           assert.property(res.body, '_id');
           assert.property(res.body, 'text');
           assert.property(res.body, 'created_on');
