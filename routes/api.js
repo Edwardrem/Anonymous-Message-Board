@@ -123,7 +123,8 @@ module.exports = app => {
     const { thread_id, reply_id } = req.body;
     Thread.findOne({ board, _id: thread_id }, (err, thread) => {
       if(err) next(err);
-      thread.findOneA
+      const replyToUpdate = thread.replies;
+      console.log(replyToUpdate);
     });
     /*
     
