@@ -67,11 +67,15 @@ module.exports = app => {
   
   app.put('/api/threads/:board', (req, res, next) => {
     const { board } = req.params;
-    const { thread_id } = req.body;
-    Thread.findOneAndUpdate({ board, _id: thread_id }, { reported: true }, { returnNewDocument: true }, (err, thread) => {
+    const { report_id } = req.body;
+    Thread.findOne({ board, _id: report_id }, (err, thread) => {
       if(err) next(err);
-      console.log(thread);
-      if (thread.reported === true) return res.status(200).send('success')
+      thread.reported = true;
+      thread.markModified('reported');
+      thread.save((err, updatedThread) => {
+        if(err) next(err);
+        return res.status(200).send('success');
+      });
     });
   });
   
