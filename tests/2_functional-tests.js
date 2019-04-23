@@ -37,8 +37,15 @@ suite('Functional Tests', () => {
           assert.equal(res.status, 200);
           assert.isArray(res.body);
           assert.isArray(res.body[0].replies);
+          assert.isNumber(res.body[0].replycount);
           assert.isAtMost(res.body.length, 10);
           assert.isAtMost(res.body[0].replies.length, 3);
+          assert.property(res.body[0], '_id');
+          assert.property(res.body[0], 'text');
+          assert.property(res.body[0], 'created_on');
+          assert.property(res.body[0], 'bumped_on');
+          assert.property(res.body[0], 'replies');
+          assert.property(res.body[0], 'replycount');
           done();
         });
       });
@@ -50,7 +57,7 @@ suite('Functional Tests', () => {
           thread_id: threadId
         }).end((err, res) => {
           assert.equal(res.status, 200);
-          assert.equal(res.text, 'success');
+          assert.equal(res.text, 'reported');
           done();
         });
       });
@@ -129,6 +136,13 @@ suite('Functional Tests', () => {
           assert.equal(res.status, 200);
           assert.equal(res.body._id, threadId);
           assert.isArray(res.body.replies);
+          assert.isAtMost(res.body.length, 10);
+          assert.isAtMost(res.body.replies.length, 3);
+          assert.property(res.body, '_id');
+          assert.property(res.body, 'text');
+          assert.property(res.body, 'created_on');
+          assert.property(res.body, 'bumped_on');
+          assert.property(res.body, 'replies');
           done();
         });
       });
@@ -141,7 +155,7 @@ suite('Functional Tests', () => {
           reply_id: replyId
         }).end((err, res) => {
           assert.equal(res.status, 200);
-          assert.equal(res.text, 'success');
+          assert.equal(res.text, 'reported');
           done();
         });
       });
