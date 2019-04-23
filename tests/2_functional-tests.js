@@ -24,7 +24,7 @@ suite('Functional Tests', () => {
           delete_password: deletePassword
         }).end((err, res) => {
           assert.equal(res.status, 200);
-          assert.equal(res.redirects[0].slice(-11), '/b/general/');
+          assert.match(res.redirects[0], /\/b/general/\/);
           done();
         });
       });
@@ -94,7 +94,7 @@ suite('Functional Tests', () => {
         });
       });
       
-      test('Obtain newly created board\'s threa', done => {
+      test('Obtain newly created board\'s thread_id', done => {
         chai.request(server).get('/api/threads/general/').end((err, res) => {
           threadId = res.body[0]._id;
           assert.equal(res.status, 200);
@@ -107,8 +107,19 @@ suite('Functional Tests', () => {
       });
     });
     
-    suite.skip('POST', () => {
-      test
+    suite('POST', () => {
+      test('Redirect after creating a reply', done => {
+        chai.request(server).post('/api/replies/general').send({
+          text: 'Tech',
+          thread_id: threadId,
+          delete_password: deletePassword
+        }).end((err, res) => {
+          console.log(res.redirects[0]);
+          assert.equal(res.status, 200);
+          done();
+          // res.redirect(`/b/${board}/${thread_id}`);
+        });
+      });
     });
     
     suite.skip('GET', () => {
