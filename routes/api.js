@@ -18,7 +18,7 @@ module.exports = app => {
     Thread.find({ board }, '-delete_password -reported', { limit: 10 }, (err, docs) => {
       if(err) next(err);
       let docArray = [];
-      Object.fromEntries = arr => { 
+      Object.fromEntries = arr => {
         return Object.assign({}, ...arr.map(([k, v]) => { 
           return ({ [k]: v });
         })); 

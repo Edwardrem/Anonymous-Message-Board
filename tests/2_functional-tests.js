@@ -122,8 +122,14 @@ suite('Functional Tests', () => {
       });
     });
     
-    suite.skip('GET', () => {
-      
+    suite('GET', () => {
+      test('Receive entire thread with all repleis', done => {
+        chai.request(server).get(`/api/replies/general/?thread_id=${threadId}`).end((err, res) => {
+          console.log(res.body);
+          assert.equal(res.status, 200);
+          done();
+        });
+      });
     });
     
     suite.skip('PUT', () => {
