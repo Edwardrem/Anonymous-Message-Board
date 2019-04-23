@@ -135,6 +135,12 @@ module.exports = app => {
   });
   
   app.delete('/api/replies/:board', (req, res, next) => {
+    const { board } = req.params;
+    const { thread_id, reply_id, delete_password } = req.body;
+    Thread.findOne({ board, _id: thread_id, }, (err, thread) => {
+      if(err) next(err);
+      const replyIndex =
+    });
     /*
     
     I can delete a post(just changing the text to '[deleted]') if I 
