@@ -10,17 +10,15 @@ const chaiHttp = require('chai-http');
 const chai = require('chai');
 const { assert } = chai;
 const server = require('../server');
-
+const deletePassword = 'password';
+let threadId, replyId;
 
 chai.use(chaiHttp);
 
 suite('Functional Tests', () => {
-  
   suite('API ROUTING FOR /api/threads/:board', () => {
-    // let threadId, deletePassword;
     suite('POST', () => {
       test('Redirect after creating a board', done => {
-        deletePassword = 'password';
         chai.request(server).post('/api/threads/general/').send({
           text: 'test',
           delete_password: deletePassword
@@ -33,7 +31,7 @@ suite('Functional Tests', () => {
     });
     
     suite('GET', () => {
-      test('GET 10 bumped threads with 3 replies', done => {
+      test('Receive 10 bumped threads with 3 replies', done => {
         chai.request(server).get('/api/threads/general/').end((err, res) => {
           threadId = res.body[0]._id;
           assert.equal(res.status, 200);
@@ -46,8 +44,20 @@ suite('Functional Tests', () => {
       });
     });
     
+    suite('PUT', () => {
+      test('Report a board', done => {
+        chai.request(server).put('/api/threads/general').send({
+          thread_id: threadId
+        }).end((err, res) => {
+          assert.equal(res.status, 200);
+          assert.equal(res.text, 'success');
+          done();
+        });
+      });
+    });
+    
     suite('DELETE', () => {
-      test('DELETE a board with the incorrect delete_password', done => {
+      test('Attempt to delete a board with an incorrect delete_password', done => {
         chai.request(server).delete('/api/threads/general/').send({
           thread_id: threadId,
           delete_password: 'wrongPassword'
@@ -58,7 +68,7 @@ suite('Functional Tests', () => {
         });
       });
       
-      test('DELETE a board with the correct delete_password', done => {
+      test('Succeed in deleting a board with the correct delete_password', done => {
         chai.request(server).delete('/api/threads/general').send({
           thread_id: threadId,
           delete_password: deletePassword
@@ -69,14 +79,9 @@ suite('Functional Tests', () => {
         });
       });
     });
-    
-    suite.skip('PUT', () => {
-      
-    });
   });
   
   suite('API ROUTING FOR /api/replies/:board', () => { 
-    let replyId, deletePassword;
     suite.skip('POST', () => {
       
     });
