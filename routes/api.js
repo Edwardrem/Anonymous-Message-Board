@@ -139,7 +139,9 @@ module.exports = app => {
     const { thread_id, reply_id, delete_password } = req.body;
     Thread.findOne({ board, _id: thread_id, }, (err, thread) => {
       if(err) next(err);
-      const replyIndex =
+      const replyIndex = thread.replies.findIndex(reply => reply._id == reply_id);
+      const replyToUpdate = thread.replies[replyIndex];
+      replyToUpdate.text = ; 
     });
     /*
     
