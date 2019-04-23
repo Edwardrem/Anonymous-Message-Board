@@ -119,6 +119,12 @@ module.exports = app => {
   });
   
   app.put('/api/replies/:board', (req, res, next) => {
+    const { board } = req.params;
+    const { thread_id, reply_id } = req.body;
+    Thread.findOne({ board, _id: thread_id }, (err, thread) => {
+      if(err) next(err);
+      thread.findOneA
+    });
     /*
     
     I can report a reply and change it's reported value to true by 
