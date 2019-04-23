@@ -13,39 +13,44 @@ const server = require('../server');
 
 chai.use(chaiHttp);
 
-suite('Functional Tests', () => {
-  suite('API ROUTING FOR /api/threads/:board', () => {
-    suite('POST', () => {
+suite.skip('Functional Tests', () => {
+  suite.skip('API ROUTING FOR /api/threads/:board', () => {
+    suite.skip('POST', () => {
+      chai.request(server).get('/api/threads/general/').send({
+        text: 'general',
+        delete_password: 'password'
+      }).end((err, res) => {
+        console.log(res);
+      });
+    });
+    
+    suite.skip('GET', () => {
       
     });
     
-    suite('GET', () => {
+    suite.skip('DELETE', () => {
       
     });
     
-    suite('DELETE', () => {
-      
-    });
-    
-    suite('PUT', () => {
+    suite.skip('PUT', () => {
       
     });
   });
   
-  suite('API ROUTING FOR /api/replies/:board', () => { 
-    suite('POST', () => {
+  suite.skip('API ROUTING FOR /api/replies/:board', () => { 
+    suite.skip('POST', () => {
       
     });
     
-    suite('GET', () => {
+    suite.skip('GET', () => {
       
     });
     
-    suite('PUT', () => {
+    suite.skip('PUT', () => {
       
     });
     
-    suite('DELETE', () => {
+    suite.skip('DELETE', () => {
       
     });
   });
