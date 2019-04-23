@@ -24,7 +24,7 @@ suite('Functional Tests', () => {
           delete_password: deletePassword
         }).end((err, res) => {
           assert.equal(res.status, 200);
-          assert.match(res.redirects[0], /\/b/general/\/);
+          assert.match(res.redirects[0], /b\/general\/$/);
           done();
         });
       });
@@ -114,10 +114,10 @@ suite('Functional Tests', () => {
           thread_id: threadId,
           delete_password: deletePassword
         }).end((err, res) => {
-          console.log(res.redirects[0]);
+          const urlValidator = new RegExp(`b\/general\/${threadId}$`);
           assert.equal(res.status, 200);
+          assert.match(res.redirects[0], urlValidator);
           done();
-          // res.redirect(`/b/${board}/${thread_id}`);
         });
       });
     });
