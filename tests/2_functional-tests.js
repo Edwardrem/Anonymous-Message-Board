@@ -13,14 +13,16 @@ const server = require('../server');
 
 chai.use(chaiHttp);
 
-suite.skip('Functional Tests', () => {
-  suite.skip('API ROUTING FOR /api/threads/:board', () => {
-    suite.skip('POST', () => {
-      chai.request(server).get('/api/threads/general/').send({
-        text: 'general',
-        delete_password: 'password'
-      }).end((err, res) => {
-        console.log(res);
+suite('Functional Tests', () => {
+  suite('API ROUTING FOR /api/threads/:board', () => {
+    suite('POST', () => {
+      test('Redirect after created a board', done => {
+        chai.request(server).post('/api/threads/general/').send({
+          text: 'test',
+          delete_password: 'password'
+        }).end((err, res) => {
+          console.log(res);
+        });
       });
     });
     
