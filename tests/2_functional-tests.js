@@ -14,7 +14,7 @@ const server = require('../server');
 chai.use(chaiHttp);
 
 suite('Functional Tests', () => {
-  let threadId, replyId;
+  let threadId, replyId, deletePassword;
   suite('API ROUTING FOR /api/threads/:board', () => {
     suite('POST', () => {
       test('Redirect after creating a board', done => {
@@ -32,7 +32,7 @@ suite('Functional Tests', () => {
     suite('GET', () => {
       test('GET 10 bumped threads with 3 replies', done => {
         chai.request(server).get('/api/threads/general/').end((err, res) => {
-          console.log(res.body[0]._id);
+          threadId = res.body[0]._id;
           assert.equal(res.status, 200);
           assert.isArray(res.body);
           assert.isArray(res.body[0].replies);
@@ -43,9 +43,15 @@ suite('Functional Tests', () => {
       });
     });
     
-    suite.skip('DELETE', () => {
-      test.skip(server).delete('/api.threads/general/').send({
-        thread_id: 
+    suite('DELETE', () => {
+      test('DELETE a board', done => {
+        chai.request(server).delete('/api.threads/general/').send({
+          thread_id: threadId,
+          delete_password: 'wrongPassword'
+        }).end((err, res) => {
+          assert.equal(res.status, 200);
+          done();
+        });
       });
     });
     
@@ -54,7 +60,7 @@ suite('Functional Tests', () => {
     });
   });
   
-  suite.skip('API ROUTING FOR /api/replies/:board', () => { 
+  suite('API ROUTING FOR /api/replies/:board', () => { 
     suite.skip('POST', () => {
       
     });
