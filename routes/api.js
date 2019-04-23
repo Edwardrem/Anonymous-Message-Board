@@ -67,8 +67,8 @@ module.exports = app => {
   
   app.put('/api/threads/:board', (req, res, next) => {
     const { board } = req.params;
-    const { report_id } = req.body;
-    Thread.findOne({ board, _id: report_id }, (err, thread) => {
+    const { thread_id } = req.body;
+    Thread.findOne({ board, _id: thread_id }, (err, thread) => {
       if(err) next(err);
       thread.reported = true;
       thread.markModified('reported');
