@@ -46,7 +46,7 @@ suite('Functional Tests', () => {
           assert.property(res.body[0], 'bumped_on');
           assert.property(res.body[0], 'replies');
           assert.property(res.body[0], 'replycount');
-          assert.notProperty(res.body);
+          assert.notProperty(res.body[0], 'delete_password');
           done();
         });
       });
@@ -142,6 +142,7 @@ suite('Functional Tests', () => {
           assert.property(res.body, 'created_on');
           assert.property(res.body, 'bumped_on');
           assert.property(res.body, 'replies');
+          assert.notProperty(res.body, 'delete_password');
           done();
         });
       });
