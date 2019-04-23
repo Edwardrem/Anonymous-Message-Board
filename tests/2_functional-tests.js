@@ -125,15 +125,18 @@ suite('Functional Tests', () => {
     suite('GET', () => {
       test('Receive entire thread with all repleis', done => {
         chai.request(server).get(`/api/replies/general/?thread_id=${threadId}`).end((err, res) => {
-          console.log(res.body);
           assert.equal(res.status, 200);
+          assert.equal(res.body._id, threadId);
+          assert.isArray(res.body.replies);
           done();
         });
       });
     });
     
     suite.skip('PUT', () => {
-      
+      test('Report a reply', done => {
+        chai.request(server).put('/api/replies/general'
+      });
     });
                
     suite.skip('DELETE', () => {

@@ -99,19 +99,12 @@ module.exports = app => {
     Thread.findOne({ board, _id: thread_id }, '-delete_password -reported', (err, thread) =>{
       if(err) next(err);
       const { _id, text, created_on, bumped_on, replies } = thread;
-      const replyArray = 
-      return res.status(200).json({
-        _id,
-        text,
-        created_on,
-        bumped_on,
-        replies: replies.map(reply => {
-          return Object.filter(reply, ([key, value]) => { 
-            return key !== 'delete_password' && key !== 'reported';
-          });
-        }),
-        replycount: replies.length
+      const replyArray = replies.map(reply => {
+        return Object.filter(reply, ([key, value]) => { 
+          return key !== 'delete_password' && key !== 'reported';
+        });
       });
+      return res.status(200).json({ _id, text, created_on, bumped_on, replies: replyArray });
     });
   });
   
