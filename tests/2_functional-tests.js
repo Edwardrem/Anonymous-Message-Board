@@ -81,9 +81,34 @@ suite('Functional Tests', () => {
     });
   });
   
-  suite('API ROUTING FOR /api/replies/:board', () => { 
-    suite.skip('POST', () => {
+  suite('API ROUTING FOR /api/replies/:board', () => {
+    suite('TEST SETUP', () => {
+      test('Create board for following test to use', done => {
+        chai.request(server).post('/api/threads/general/').send({
+          text: 'test',
+          delete_password: deletePassword
+        }).end((err, res) => {
+          assert.equal(res.status, 200);
+          assert.equal(res.redirects[0].slice(-11), '/b/general/');
+          done();
+        });
+      });
       
+      test('Obtain newly created board\'s threa', done => {
+        chai.request(server).get('/api/threads/general/').end((err, res) => {
+          threadId = res.body[0]._id;
+          assert.equal(res.status, 200);
+          assert.isArray(res.body);
+          assert.isArray(res.body[0].replies);
+          assert.isAtMost(res.body.length, 10);
+          assert.isAtMost(res.body[0].replies.length, 3);
+          done();
+        });
+      });
+    });
+    
+    suite.skip('POST', () => {
+      test
     });
     
     suite.skip('GET', () => {
@@ -93,7 +118,7 @@ suite('Functional Tests', () => {
     suite.skip('PUT', () => {
       
     });
-    
+               
     suite.skip('DELETE', () => {
       
     });
