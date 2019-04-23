@@ -85,11 +85,11 @@ module.exports = app => {
     Thread.findOne({ board, _id: thread_id }, (err, board) => {
       if(err) next(err);
       if (board.delete_password !== delete_password) return res.send('incorrect password');
+      board.deleteOne({ board, _id: thread_id }, (err, updatedBoard) => {
+        if(err) next(err);
+        return res.status(200).send('success');
+      });
     });
-    // Thread.deleteOne({ board, _id: thread_id, delete_password }, (err, updatedBoard) => {
-    //   if(err) next(err);
-    //   return res.status(200).send('success');
-    // });
   });
     
   app.get('/api/replies/:board', (req, res, next) => {

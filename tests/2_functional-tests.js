@@ -11,16 +11,19 @@ const chai = require('chai');
 const { assert } = chai;
 const server = require('../server');
 
+
 chai.use(chaiHttp);
 
 suite('Functional Tests', () => {
+  
   suite('API ROUTING FOR /api/threads/:board', () => {
-    let threadId;
+    // let threadId, deletePassword;
     suite('POST', () => {
       test('Redirect after creating a board', done => {
+        deletePassword = 'password';
         chai.request(server).post('/api/threads/general/').send({
           text: 'test',
-          delete_password: 'password'
+          delete_password: deletePassword
         }).end((err, res) => {
           assert.equal(res.status, 200);
           assert.equal(res.redirects[0].slice(-11), '/b/general/');
@@ -51,6 +54,17 @@ suite('Functional Tests', () => {
         }).end((err, res) => {
           assert.equal(res.status, 200);
           assert.equal(res.text, 'incorrect password');
+          done();
+        });
+      });
+      
+      test('DELETE a board with the correct delete_password', done => {
+        chai.request(server).delete('/api/threads/general').send({
+          thread_id: threadId,
+          delete_password: deletePassword
+        }).end((err, res) => {
+          assert.equal(res.status, 200);
+          assert.equal(res.text, 'success');
           done();
         });
       });
