@@ -123,15 +123,15 @@ module.exports = app => {
     const { thread_id, reply_id } = req.body;
     Thread.findOne({ board, _id: thread_id }, (err, thread) => {
       if(err) next(err);
+      const reply
       const replyIndex = thread.replies.findIndex(reply => reply._id === reply_id);
       const replyToUpdate = thread.replies[replyIndex];
-      replyToUpdate.report = true;
+      console.log(thread.replies.findIndex(reply => reply._id == reply_id));
       thread.markModified('replies');
       thread.save((err, updatedThread) => {
         if(err) next(err);
         return res.status(200).send('success');
       });
-      console.log(replyToUpdate);
     });
     /*
     
