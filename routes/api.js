@@ -15,18 +15,18 @@ const db = mongoose.connection;
 module.exports = app => {
   app.get('/api/threads/:board', (req, res, next) => {
     const { board } = req.params;
-    Thread.find({ board }, '-delete_password -reported', { limit: 10 }, (err, docs) => {
+    Thread.find({ board }, '-delete_password -reported', { limit: 10 }, (err, threads) => {
       if(err) next(err);
-      let docArray = [];
+      const threadArray = [];
       Object.fromEntries = arr => {
         return Object.assign({}, ...arr.map(([k, v]) => { 
           return ({ [k]: v });
         })); 
       }
-      Object.filter = (obj, predicate) => { 
+      Object.filter = (obj, predicate) => {
         return Object.fromEntries(Object.entries(obj).filter(predicate));
       }
-      docs.forEach(doc => docArray.push({
+      threads.forEach(doc => threadArray.push({
         _id: doc._id,
         text: doc.text,
         created_on: doc.created_on,
@@ -38,8 +38,8 @@ module.exports = app => {
         }).slice(0, 3),
         replycount: doc.replies.length
       }));
-      docArray.sort((a, b) => b.bumped_on - a.bumped_on);
-      return res.status(200).json(docArray);
+      threadArray.sort((a, b) => b.bumped_on - a.bumped_on);
+      return res.status(200).json(threadArray);
     });
   });
   
@@ -97,7 +97,12 @@ module.exports = app => {
     const { thread_id } = req.query;
     Thread.findOne({ board, _id: thread_id }, '-delete_password -reported', (err, thread) =>{
       if(err) next(err);
-      return res.status(200).json(thread);
+      const { _id, text, created_on, bumped_on, replies } = thread;
+      const repliesArray = [];
+      
+      return res.status(200).json({
+        created_on
+      });
     });
   });
   
