@@ -33,7 +33,6 @@ suite('Functional Tests', () => {
       test('GET 10 bumped threads with 3 replies', done => {
         chai.request(server).get('/api/threads/general/').end((err, res) => {
           threadId = res.body[0]._id;
-          console.log(threadId);
           assert.equal(res.status, 200);
           assert.isArray(res.body);
           assert.isArray(res.body[0].replies);
@@ -46,13 +45,12 @@ suite('Functional Tests', () => {
     
     suite('DELETE', () => {
       test('DELETE a board with the incorrect delete_password', done => {
-        chai.request(server).delete('/api.threads/general/').send({
+        chai.request(server).delete('/api/threads/general/').send({
           thread_id: threadId,
           delete_password: 'wrongPassword'
         }).end((err, res) => {
-          console.log(res.text);
-          // assert.equal(res.status, 200);
-          // assert.eqaul(res.text, 'incorrect password');
+          assert.equal(res.status, 200);
+          assert.equal(res.text, 'incorrect password');
           done();
         });
       });
