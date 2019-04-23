@@ -82,10 +82,13 @@ module.exports = app => {
   app.delete('/api/threads/:board', (req, res, next) => {
     const { board } = req.params;
     const { thread_id, delete_password } = req.body;
+    console.log('testing');
+    console.log(thread_id);
     Thread.deleteOne({ board, _id: thread_id, delete_password }, (err, updatedBoard) => {
       if(err) next(err);
+      console.log(updatedBoard);
+      if (!updatedBoard) return res.status(200).send('incorrect password');
       if (updatedBoard.deletedCount === 1) return res.status(200).send('success');
-      return res.status(200).send('incorrect password');
     });
   });
     
