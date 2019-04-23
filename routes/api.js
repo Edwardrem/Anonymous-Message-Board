@@ -123,28 +123,15 @@ module.exports = app => {
     const { thread_id, reply_id } = req.body;
     Thread.findOne({ board, _id: thread_id }, (err, thread) => {
       if(err) next(err);
-      const reply
-      const replyIndex = thread.replies.findIndex(reply => reply._id === reply_id);
+      const replyIndex = thread.replies.findIndex(reply => reply._id == reply_id);
       const replyToUpdate = thread.replies[replyIndex];
-      console.log(thread.replies.findIndex(reply => reply._id == reply_id));
+      replyToUpdate.reported = true;
       thread.markModified('replies');
       thread.save((err, updatedThread) => {
         if(err) next(err);
         return res.status(200).send('success');
       });
     });
-    /*
-    
-    I can report a reply and change it's reported value to true by 
-    sending a PUT request to /api/replies/{board} and pass along the 
-    thread_id & reply_id. (Text response will be 'success')
-    
-    PUT '/api/replies/:board'
-    .send({ thread_id, reply_id })
-    reported will be updated to true
-    res.status(200).send('success')
-    
-    */
   });
   
   app.delete('/api/replies/:board', (req, res, next) => {
